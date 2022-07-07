@@ -30,3 +30,13 @@ TEST(ProjectTest, classCalc_readFile_noexception)
 
 	std::cout << calc.company << std::endl;
 }
+
+TEST(ProjectTest, classCalc_calcCost_fromFile)
+{
+	Calculator calc;
+	calc.readFile("list.txt");
+
+	calc.calcDebts();
+
+	std::cout << calc.company << std::endl;
+}

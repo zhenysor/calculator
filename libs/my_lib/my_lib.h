@@ -5,7 +5,6 @@
 #include <fstream>
 #include <exception>
 #include <list>
-//#include <math.h>
 
 class Calculator
 {
@@ -15,14 +14,15 @@ public:
 	{
 	public:
 
-		Pers()
+		Pers() : debt(0)
 		{}
 
-		Pers(std::string n, int s) : name(n), spending(s)
+		Pers(std::string n, int s) : name(n), spending(s), debt(0)
 		{}
 
 		std::string name;
 		int spending;
+		int debt;
 	};
 
 	size_t personCount() const
@@ -62,7 +62,32 @@ public:
 		else {
 			throw "file not found";
 		}
+	}
 
+	int allCost() const
+	{
+		int sum = 0;
+		for(const Pers &pers : company) {
+			sum += pers.spending;
+		}
+		return sum;
+	}
+
+	int costForOne() const
+	{
+		int res = allCost();
+		int count = static_cast<int>(personCount());
+
+		return res/count;
+	}
+
+	void calcDebts()
+	{
+		int oneCost = costForOne();
+
+		for(Pers &pers : company) {
+			pers.debt = oneCost - pers.spending;
+		}
 	}
 
 	std::list<Pers> company;
@@ -71,8 +96,22 @@ public:
 std::ostream& operator<<(std::ostream &out, const Calculator::Pers &pers)
 {
 	out << pers.name;
-	out << " - ";
+	out << " потратил(а) ";
 	out << pers.spending;
+	out << " руб.";
+
+	if(pers.debt) {
+
+		if(pers.debt > 0) {
+			out << " Скидывает ";
+		}
+		else {
+			out << " Получает ";
+		}
+		out << abs(pers.debt);
+		out << " руб.";
+	}
+
 	return out;
 }
 
