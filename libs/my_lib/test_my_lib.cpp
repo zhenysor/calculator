@@ -22,3 +22,11 @@ TEST(ProjectTest, classCalcAndPers_outoperator_nameAndSpending)
 
 	std::cout << list << std::endl;
 }
+
+TEST(ProjectTest, classCalc_readFile_noexception)
+{
+	Calculator calc;
+	calc.readFile("list.txt");
+
+	std::cout << calc.company << std::endl;
+}

@@ -15,6 +15,9 @@ public:
 	{
 	public:
 
+		Pers()
+		{}
+
 		Pers(std::string n, int s) : name(n), spending(s)
 		{}
 
@@ -25,6 +28,41 @@ public:
 	size_t personCount() const
 	{
 		return company.size();
+	}
+
+	void readFile(const std::string &fileName)
+	{
+		std::ifstream input(fileName);
+
+		if(input.is_open()) {
+
+			char symb = '.';
+			while(input.get(symb)){
+
+				Calculator::Pers pers;
+				std::string str1, str2;
+				do {
+					str1.push_back(symb);
+				} while(input.get(symb) && symb != ' ');
+
+				pers.name = str1;
+				str1 = "";
+
+				do {
+					str2.push_back(symb);
+				} while(input.get(symb) && symb != '\n');
+
+				int sp = atoi(str2.c_str());
+				pers.spending = sp;
+				str2 = "";
+
+				company.push_back(pers);
+			}
+		}
+		else {
+			throw "file not found";
+		}
+
 	}
 
 	std::list<Pers> company;
@@ -46,7 +84,5 @@ std::ostream& operator<<(std::ostream &out, const std::list<Calculator::Pers> &c
 	}
 	return out;
 }
-
-//std::ifstream
 
 #endif // MY_LIB_H
